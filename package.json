@@ -1,0 +1,34 @@
+{
+  "name": "katha-utsav-2021-registration",
+  "version": "1.0.0",
+  "description": "Backend service for User registration for Katha utsav 2021",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=local node src/server/app.js",
+    "build": "webpack-cli --config=\"./config/webpack.config.js\" --env NODE_ENV=production --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrc-india-csr/katha-utsav-2021-registration.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrc-india-csr/katha-utsav-2021-registration/issues"
+  },
+  "homepage": "https://github.com/mrc-india-csr/katha-utsav-2021-registration#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "lodash": "^4.17.21",
+    "nodemon": "^2.0.12",
+    "pg": "^8.7.1",
+    "webpack": "^5.51.1",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.0.0"
+  },
+  "devDependencies": {
+  }
+}
