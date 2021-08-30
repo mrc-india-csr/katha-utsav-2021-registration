@@ -1,11 +1,14 @@
 const router = require('express').Router();
+const path  = require('path');
 
-router.get('/payment', async (req, res) => {
+
+router.get(('/logo.png'), (req, res) => {
   try {
-    res.send('payment');
-  } catch (error) {
-    res.status(500).send(error);
+    res.sendFile(path.join(__dirname, '../assets/images/logo.png'));
+  } catch (e) {
+    console.log(e);
+    res.status(404).send();
   }
 });
 
-module.exports = router;
+exports.router = router;

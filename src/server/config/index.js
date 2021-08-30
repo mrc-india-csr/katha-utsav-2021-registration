@@ -2,7 +2,7 @@
 const { mergeIgnoringUndefined } = require('../utils/helpers');
 const env = process.env.NODE_ENV;
 
-const validEnvironments = ['local', 'dev', 'production'];
+const validEnvironments = ['local', 'qa', 'prod'];
 
 module.exports = /* istanbul ignore next */ mergeIgnoringUndefined(
   require('./defaults'),
