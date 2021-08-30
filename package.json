@@ -4,7 +4,7 @@
   "description": "Backend service for User registration for Katha utsav 2021",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=local node src/server/app.js",
+    "start": "NODE_ENV=local nodemon -r dotenv/config src/server/app.js",
     "build": "webpack-cli --config=\"./config/webpack.config.js\" --env NODE_ENV=production --mode production"
   },
   "repository": {
@@ -18,17 +18,22 @@
   },
   "homepage": "https://github.com/mrc-india-csr/katha-utsav-2021-registration#readme",
   "dependencies": {
+    "aws-sdk": "^2.976.0",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-validation": "^3.0.8",
     "lodash": "^4.17.21",
-    "nodemon": "^2.0.12",
+    "multer": "^1.4.3",
+    "path": "^0.12.7",
     "pg": "^8.7.1",
-    "webpack": "^5.51.1",
-    "webpack-cli": "^4.8.0",
-    "webpack-dev-server": "^4.0.0"
+    "razorpay": "^2.0.6",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "nodemon": "^2.0.12"
   }
 }
