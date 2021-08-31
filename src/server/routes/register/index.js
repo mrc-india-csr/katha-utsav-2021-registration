@@ -6,6 +6,7 @@ const PaymentVerification = require('../../middlewares/paymentVerification');
 const GenerateRegistrationOrder = require('../../middlewares/generateRegistrationOrder');
 const GenerateRegistrationNumber = require('../../middlewares/GenerateRegistrationNumber');
 const ConstructOrderResponse = require('../../middlewares/constructOrderResponse');
+const mailer = require('../../middlewares/mailer');
 const { registerValidation, successValidation, failureValidation } = require('../../utils/validationHelpers');
 
 router.post(('/generate_order'), ContentTypeValidation, validate(registerValidation, {}, {}), GenerateRegistrationOrder, GenerateRegistrationNumber, ConstructOrderResponse, async (req, res) => {
@@ -13,7 +14,7 @@ router.post(('/generate_order'), ContentTypeValidation, validate(registerValidat
   res.status(200).json(res.locals.orderResponse);
 });
 
-router.post('/complete_registration', ContentTypeValidation, validate(successValidation, {}, {}), PaymentVerification, (req, res) => {
+router.post('/complete_registration', ContentTypeValidation, validate(successValidation, {}, {}), PaymentVerification, mailer, (req, res) => {
   //TODO write the success data to DB and add middleware to send email
   res.status(200).json({
     status: 'success',

@@ -14,8 +14,8 @@ const MulterUpload = multer({
   storage: storage,
   fileFilter: function (req, file, callback) {
     let ext = path.extname(file.originalname);
-    if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
-      return callback(new Error('Only images are allowed'))
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.pdf' && ext !== '.jpeg' && ext !== '.docx' && ext !== '.doc') {
+      return callback(new Error('Unsupported file format!'))
     }
     callback(null, true)
   },

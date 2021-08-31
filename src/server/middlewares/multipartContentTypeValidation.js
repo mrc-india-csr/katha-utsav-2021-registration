@@ -1,6 +1,6 @@
 const MulterContentValidation = function (req, res, next) {
-
-  if (req.headers['content-type'].includes('multipart/form-data')) {
+ // TODO: check if particular form field is present or not
+  if (req.headers['content-type'].includes('multipart/form-data')) {  
     next();
   } else {
     res.status(400).json({
