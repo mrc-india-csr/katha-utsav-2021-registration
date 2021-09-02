@@ -67,6 +67,16 @@ const failureValidation = {
   }),
 }
 
+const contactValidation = {
+  body: Joi.object().keys({
+    name: Joi.string().required(),
+    phone: Joi.string().required().length(10),
+    email: Joi.string().email().required(),
+    message: Joi.string().required(),
+  }),
+}
+
+exports.contactValidation = contactValidation;
 exports.successValidation = successValidation;
 exports.failureValidation = failureValidation;
 exports.registerValidation = registerValidation;
