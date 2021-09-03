@@ -8,21 +8,21 @@ const GenerateRegistrationNumber = require('../../middlewares/GenerateRegistrati
 const ConstructOrderResponse = require('../../middlewares/constructOrderResponse');
 const mailer = require('../../middlewares/mailer');
 const { registerValidation, successValidation, failureValidation } = require('../../utils/validationHelpers');
+const { updatePaymentSuccess, updatePaymentFailure } = require('../../middlewares/updatePaymentStatus');
 
 router.post(('/generate_order'), ContentTypeValidation, validate(registerValidation, {}, {}), GenerateRegistrationOrder, GenerateRegistrationNumber, ConstructOrderResponse, async (req, res) => {
   //TODO write the form data to DB
   res.status(200).json(res.locals.orderResponse);
 });
 
-router.post('/complete_registration', ContentTypeValidation, validate(successValidation, {}, {}), PaymentVerification, mailer, (req, res) => {
-  //TODO write the success data to DB and add middleware to send email
+router.post('/complete_registration', ContentTypeValidation, validate(successValidation, {}, {}), PaymentVerification, updatePaymentSuccess, mailer, (req, res) => {
   res.status(200).json({
     status: 'success',
     message: 'Congratulations registration success, Check mail for further instructions'
   })
 });
 
-router.post('/registration_failed', ContentTypeValidation, validate(failureValidation, {}, {}), (req, res) => {
+router.post('/registration_failed', ContentTypeValidation, validate(failureValidation, {}, {}), updatePaymentFailure, (req, res) => {
   //TODO write the failure data to DB
   res.status(200).send();
 });

@@ -1,14 +1,16 @@
 var {pool} = require('../initializers/pgdb');
+const config = require('../config');
 
 function GenerateRegistrationNumber( request, response, next) {
-  const { studentsList, userEmail, userName, userSchool, userPhone, userCity } = request.body.formData;
+  const { studentsList, userEmail, userName, userSchool, userPhone, userCity} = request.body;
+  const { paymentId, id } = response.locals.orderResponse;
 
   async function registerCity() {
     const values = [userCity];
-    var cityId = await pool.query(`SELECT city_id from cities WHERE EXISTS (SELECT city_id from schools WHERE city_name = $1 )`,values);
+    var cityId = await pool.query(`SELECT city_id from ${config.pgDatabaseSchema}.cities WHERE EXISTS (SELECT city_id from schools WHERE city_name = $1 )`,values);
 
     if(cityId.rows.length < 1) {
-      const text = `INSERT INTO cities (city_name) values ($1) RETURNING city_id`;
+      const text = `INSERT INTO ${config.pgDatabaseSchema}.cities (city_name) values ($1) RETURNING city_id`;
       cityId = await pool.query(text,values);
     }
     return cityId.rows[0]["city_id"];
@@ -16,11 +18,11 @@ function GenerateRegistrationNumber( request, response, next) {
 
   async function registerSchool(cityResult) { 
     let values = [userSchool];
-    let schoolId = await pool.query(`SELECT school_id from schools WHERE (EXISTS (SELECT school_id from schools WHERE school_name = $1 ) and school_name = $1)`,values);
+    let schoolId = await pool.query(`SELECT school_id from ${config.pgDatabaseSchema}.schools WHERE (EXISTS (SELECT school_id from schools WHERE school_name = $1 ) and school_name = $1)`,values);
     let schoolCoordinatorId = {};
     if(schoolId.rows.length < 1) {
       const text = `
-        INSERT INTO schools (school_name, city_id)
+        INSERT INTO ${config.pgDatabaseSchema}.schools (school_name, city_id)
         VALUES ($1, $2)
         RETURNING school_id
         `;
@@ -29,7 +31,7 @@ function GenerateRegistrationNumber( request, response, next) {
 
       if(studentsList.length > 1) {
         const text = `
-          INSERT INTO school_coordinators (school_id, school_coordinator_name, coordinator_phone_number, coordinator_email_id)
+          INSERT INTO ${config.pgDatabaseSchema}.school_coordinators (school_id, school_coordinator_name, coordinator_phone_number, coordinator_email_id)
           VALUES ($1, $2, $3, $4)
           RETURNING school_coordinator_id
           `;
@@ -41,7 +43,7 @@ function GenerateRegistrationNumber( request, response, next) {
         });
       } 
     } else {
-      const text = `SELECT school_coordinator_id from school_coordinators
+      const text = `SELECT school_coordinator_id from ${config.pgDatabaseSchema}.school_coordinators
         WHERE school_id = $1`;
       const values = [schoolId.rows[0]["school_id"]];
       schoolCoordinatorId = await pool.query(text,values);
@@ -56,7 +58,7 @@ function GenerateRegistrationNumber( request, response, next) {
     var classIdList = [];
     classIdList = await Promise.all(studentsList.map(async (studentObject) => {
       const text = `
-        SELECT class_id FROM classes 
+        SELECT class_id FROM ${config.pgDatabaseSchema}.classes 
         WHERE class_name = $1
         `;
       const values = [studentObject.studentClass];
@@ -72,7 +74,7 @@ function GenerateRegistrationNumber( request, response, next) {
 
     storyCategoryIdList = await Promise.all(studentsList.map(async (studentObject) => {
       const text = `
-      SELECT story_category_id FROM story_categories 
+      SELECT story_category_id FROM ${config.pgDatabaseSchema}.story_categories 
       WHERE story_category_name = $1
       `;
       const values = [studentObject.storyCategory];
@@ -87,18 +89,35 @@ function GenerateRegistrationNumber( request, response, next) {
     let studentIdList = [];
 
     studentIdList = await Promise.all(studentsList.map(async (studentObject, index) => {
-      const {studentName, studentEmail, studentPhone} = studentObject;
+      const {studentName, studentEmail, studentPhone, storyPath} = studentObject;
       const text = `
-      INSERT INTO students (student_name, email_id, phone_number, school_id, city, class_id, story_category_id, school_coordinator_id, upload_file_id, registration_date)
+      INSERT INTO ${config.pgDatabaseSchema}.students (student_name, email_id, phone_number, school_id, city_id, class_id, story_category_id, school_coordinator_id, upload_file_id, registration_date)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       RETURNING student_id, student_name;
       `;
-      const values = [studentName, studentEmail, studentPhone, schoolResult.schoolId, cityId, classId[index], storyCategoryId[index] , schoolResult.schoolCoordinatorId , 1, new Date(Date.now())];
+      const values = [studentName, studentEmail, studentPhone, schoolResult.schoolId, cityId, classId[index], storyCategoryId[index] , schoolResult.schoolCoordinatorId , storyPath, new Date(Date.now())];
       const studentId = await pool.query(text, values);
-      return studentId;
+      return studentId.rows[0]["student_id"];
     }));
 
     return studentIdList;
+  }
+
+  async function registerPayment(studentResult) {
+    let paymentIdList = [];
+
+    paymentIdList = await Promise.all(studentResult.map(async studentData => {
+      const text = `
+        INSERT INTO ${config.pgDatabaseSchema}.payments (payment_id_pgw, order_id_pgw, student_id, payment_status)
+        VALUES ($1, $2, $3, $4)
+        RETURNING payment_id;
+        `;
+      const values = [paymentId, id, studentData, 'PENDING'];
+      const paymentIdResult = await pool.query(text,values);
+      return paymentIdResult.rows[0]["payment_id"];
+    }));
+
+    return paymentIdList;
   }
  
   (async () => {
@@ -107,14 +126,14 @@ function GenerateRegistrationNumber( request, response, next) {
     const classResult = await registerClasses();
     const storyCategoryResult = await registerStoryCategory();
     const studentResult = await registerStudent(schoolResult, classResult, cityResult, storyCategoryResult);
-    console.log(studentResult[0].rows);
+    const paymentResult = await registerPayment(studentResult);
+
+    response.locals.regIds = studentResult;
+    response.locals.paymentId = paymentResult;
+
     next();
   })();
 
 }
 
 module.exports = GenerateRegistrationNumber;
-
-/*res.locals.regIds = [1243823, 1423442, 8768768, 8768789];
-  res.locals.paymentId = 2398474;
-  next();*/
