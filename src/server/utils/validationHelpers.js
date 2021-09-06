@@ -43,7 +43,7 @@ const successValidation = {
   body: Joi.object().keys({
     key: Joi.string().required(),
     id: Joi.string().required(),
-    paymentDbId: Joi.number().required(),
+    paymentDbId: Joi.required(),
     amount: Joi.number().required(),
     currency: Joi.string().required(),
     status: Joi.string().required(),
@@ -58,7 +58,7 @@ const failureValidation = {
   body: Joi.object().keys({
     key: Joi.string().required(),
     id: Joi.string().required(),
-    paymentDbId: Joi.number().required(),
+    paymentDbId: Joi.required(),
     amount: Joi.number().required(),
     currency: Joi.string().required(),
     status: Joi.string().required(),
