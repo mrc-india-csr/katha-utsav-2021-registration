@@ -7,7 +7,7 @@ function GenerateRegistrationNumber( request, response, next) {
 
   async function registerCity() {
     const values = [userCity];
-    var cityId = await pool.query(`SELECT city_id from ${config.pgDatabaseSchema}.cities WHERE EXISTS (SELECT city_id from schools WHERE city_name = $1 )`,values);
+    var cityId = await pool.query(`SELECT city_id from ${config.pgDatabaseSchema}.cities WHERE (EXISTS (SELECT city_id from ${config.pgDatabaseSchema}.cities WHERE city_name = $1 ) and city_name = $1)`,values);
 
     if(cityId.rows.length < 1) {
       const text = `INSERT INTO ${config.pgDatabaseSchema}.cities (city_name) values ($1) RETURNING city_id`;
@@ -18,7 +18,7 @@ function GenerateRegistrationNumber( request, response, next) {
 
   async function registerSchool(cityResult) { 
     let values = [userSchool];
-    let schoolId = await pool.query(`SELECT school_id from ${config.pgDatabaseSchema}.schools WHERE (EXISTS (SELECT school_id from schools WHERE school_name = $1 ) and school_name = $1)`,values);
+    let schoolId = await pool.query(`SELECT school_id from ${config.pgDatabaseSchema}.schools WHERE (EXISTS (SELECT school_id from ${config.pgDatabaseSchema}.schools WHERE school_name = $1 ) and school_name = $1)`,values);
     let schoolCoordinatorId = {};
     if(schoolId.rows.length < 1) {
       const text = `
@@ -50,7 +50,7 @@ function GenerateRegistrationNumber( request, response, next) {
     }
    return ({
      schoolId: schoolId.rows[0]["school_id"],
-     schoolCoordinatorId: schoolCoordinatorId.length > 0 ? schoolCoordinatorId.rows[0]["school_coordinator_id"] : undefined
+     schoolCoordinatorId: Object.keys(schoolCoordinatorId).length > 0 ? schoolCoordinatorId.rows[0]["school_coordinator_id"] : undefined
    });
   }
 
@@ -91,7 +91,7 @@ function GenerateRegistrationNumber( request, response, next) {
     studentIdList = await Promise.all(studentsList.map(async (studentObject, index) => {
       const {studentName, studentEmail, studentPhone, storyPath} = studentObject;
       const text = `
-      INSERT INTO ${config.pgDatabaseSchema}.students (student_name, email_id, phone_number, school_id, city_id, class_id, story_category_id, school_coordinator_id, upload_file_id, registration_date)
+      INSERT INTO ${config.pgDatabaseSchema}.students (student_name, email_id, phone_number, school_id, city_id, class_id, story_category_id, school_coordinator_id, file_location_url, registration_date)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       RETURNING student_id, student_name;
       `;
