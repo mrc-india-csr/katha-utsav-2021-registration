@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=local nodemon -r dotenv/config src/server/app.js",
-    "build": "webpack-cli --config=\"./config/webpack.config.js\" --env NODE_ENV=production --mode production"
+    "qa": "NODE_ENV=qa node -r dotenv/config src/server/app.js"
   },
   "repository": {
     "type": "git",
