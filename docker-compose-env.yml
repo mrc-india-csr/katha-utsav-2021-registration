@@ -7,7 +7,7 @@ networks:
     name: ${TRAEFIK_NETWORK}
 
 services:
-  katha_utsav:
+  katha_utsav_registration:
     image: ${REGISTRY}/${IMAGETAG}:${GO_REVISION}
     env_file: env_vars/${GO_STAGE_NAME}.env
     environment:

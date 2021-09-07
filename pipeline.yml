@@ -1,4 +1,4 @@
-stackname: kathautsavmodule
+stackname: kathautsavregistrationmodule
 env_folder: env_vars
 replicas:
   dev: 1
