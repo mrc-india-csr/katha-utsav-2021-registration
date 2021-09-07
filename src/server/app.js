@@ -14,7 +14,7 @@ const { storyRoutes } = require("./routes/stories");
 
 
 //Port Assigning
-const port = process.env.PORT || 3010;
+const port = process.env.PORT || 3002;
 
 
 //App Initialization

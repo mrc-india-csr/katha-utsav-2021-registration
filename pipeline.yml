@@ -6,7 +6,7 @@ replicas:
 restart_policy: any
 max_mem: 1024M
 max_cpu: 1
-traefik_application_port: 9002
+traefik_application_port: 3002
 traefik_https_enable: true
 traefik_ssl_provider: letsencrypt
 vault:
@@ -14,17 +14,17 @@ vault:
   name: katha-utsav
   envs:
     - NODE_ENV
-    - PG_DATABASE_HOST
-    - PG_DATABASE_PORT
-    - PG_DATABASE_NAME
-    - PG_DATABASE_USERNAME
-    - PG_DATABASE_PASSWORD
-    - PG_DATABASE_SCHEMA
-    - S3_BUCKET_NAME
-    - S3_BUCKET_REGION
-    - S3_ACCESS_KEY
-    - S3_SECRET_KEY
-    - RAZORPAY_KEY_ID
-    - RAZORPAY_KEY_SECRET
-    - MAIL_SENDER
-    - MAIL_PASSWORD
+#    - PG_DATABASE_HOST
+#    - PG_DATABASE_PORT
+#    - PG_DATABASE_NAME
+#    - PG_DATABASE_USERNAME
+#    - PG_DATABASE_PASSWORD
+#    - PG_DATABASE_SCHEMA
+#    - S3_BUCKET_NAME
+#    - S3_BUCKET_REGION
+#    - S3_ACCESS_KEY
+#    - S3_SECRET_KEY
+#    - RAZORPAY_KEY_ID
+#    - RAZORPAY_KEY_SECRET
+#    - MAIL_SENDER
+#    - MAIL_PASSWORD
