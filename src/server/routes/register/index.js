@@ -23,7 +23,6 @@ router.post('/complete_registration', ContentTypeValidation, validate(successVal
 });
 
 router.post('/registration_failed', ContentTypeValidation, validate(failureValidation, {}, {}), updatePaymentFailure, (req, res) => {
-  //TODO write the failure data to DB
   res.status(200).send();
 });
 

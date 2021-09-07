@@ -50,7 +50,7 @@ function GenerateRegistrationNumber( request, response, next) {
     }
    return ({
      schoolId: schoolId.rows[0]["school_id"],
-     schoolCoordinatorId: Object.keys(schoolCoordinatorId).length > 0 ? schoolCoordinatorId.rows[0]["school_coordinator_id"] : undefined
+     schoolCoordinatorId: ((Object.keys(schoolCoordinatorId).length > 0) && (schoolCoordinatorId.rows.length > 0)) ? schoolCoordinatorId.rows[0]["school_coordinator_id"] : undefined
    });
   }
 
