@@ -23,7 +23,10 @@ router.post('/complete_registration', ContentTypeValidation, validate(successVal
 });
 
 router.post('/registration_failed', ContentTypeValidation, validate(failureValidation, {}, {}), updatePaymentFailure, (req, res) => {
-  res.status(200).send();
+  res.status(200).json({
+    status: 'Payment Failed',
+    paymentId: req.body.paymentId
+  });
 });
 
 exports.registerRoutes = router;
