@@ -9,6 +9,7 @@ module.exports = {
   s3BucketRegion: process.env.S3_BUCKET_REGION,
   s3AccessKey: process.env.S3_ACCESS_KEY,
   s3SecretKey: process.env.S3_SECRET_KEY,
+  s3Folder: process.env.S3_FOLDER,
   razorpayKeyId: process.env.RAZORPAY_KEY_ID,
   razorpayKeySecret: process.env.RAZORPAY_KEY_SECRET,
   mailSender: process.env.MAIL_SENDER,

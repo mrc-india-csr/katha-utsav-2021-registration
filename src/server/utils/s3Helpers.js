@@ -2,7 +2,7 @@ const s3 = require('../initializers/awsS3');
 const fs = require('fs');
 const config = require('../config');
 
-const { s3BucketName } = config
+const { s3BucketName, s3Folder } = config
 
 function s3UploadFile(file) {
   const fileStream = fs.createReadStream(file.path).on('error', function (e) {
@@ -12,7 +12,7 @@ function s3UploadFile(file) {
   const uploadParams = {
     Bucket: s3BucketName,
     Body: fileStream,
-    Key: file.filename
+    Key: s3Folder + file.filename
   }
   return s3.upload(uploadParams).promise()
 }
