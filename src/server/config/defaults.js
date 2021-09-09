@@ -8,6 +8,7 @@ module.exports = {
   s3BucketRegion: '',
   s3AccessKey: '',
   s3SecretKey: '',
+  s3Folder: 'dev/',
   razorpayKeyId: '',
   razorpayKeySecret: '',
 }
