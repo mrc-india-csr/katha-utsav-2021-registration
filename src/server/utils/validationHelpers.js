@@ -70,7 +70,7 @@ const failureValidation = {
 const contactValidation = {
   body: Joi.object().keys({
     name: Joi.string().required(),
-    phone: Joi.string().required().length(10),
+    phone: Joi.string().regex(/^[0-9]*$/).required(),
     email: Joi.string().email().required(),
     message: Joi.string().required(),
   }),
