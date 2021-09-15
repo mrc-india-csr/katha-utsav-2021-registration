@@ -4,21 +4,21 @@ const config = require('../config')
 module.exports = (request, response, next) => {
 
     const { mailSender, mailPassword } = config;
-    const {  paymentId, amount } = request.body;
+    const {  id, amount } = request.body;
     const { studentsList, userEmail, userName, userSchool, userPhone } = request.body.formData;
     const fromMail = 'event@katha.org';
     const isSchoolRegistration = studentsList.length > 1 ? true : false;
 
     const schoolRegistratonTable = () => {
         var regIdText = '';
-        const amountIndividual = amount/studentsList.length; 
+        const amountIndividual = (amount/studentsList.length)/100; 
         studentsList.forEach( student => {
             regIdText = regIdText + `<tr><td>${student.studentName}</td>
             <td>${userSchool}</td>
             <td>${student.studentPhone}</td>
             <td>${student.studentEmail}</td>
             <td>${amountIndividual}</td>
-            <td>${paymentId}</td>
+            <td>${id}</td>
             <td>${student.studentId}</td></tr>`;
         });
         return regIdText;
@@ -43,8 +43,8 @@ module.exports = (request, response, next) => {
             <td>${userSchool}</td>
             <td>${userPhone}</td>
             <td>${userEmail}</td>
-            <td>${amount}</td>
-            <td>${paymentId}</td>
+            <td>${amount/100}</td>
+            <td>${id}</td>
         </tr>`}
     </table><br/>
     ${isSchoolRegistration ? '' : `Your unique Katha Utsav'21 ID:<b>${studentsList[0].studentId}.</b><br/><br/>`}
@@ -78,7 +78,8 @@ module.exports = (request, response, next) => {
         from: fromMail,
         to: userEmail,
         subject: subject,
-        html: body
+        html: body,
+        text: body
     }
 
     SMTPtransport.sendMail(mailOptions, (error) => {
