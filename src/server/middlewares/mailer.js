@@ -78,7 +78,8 @@ module.exports = (request, response, next) => {
         from: fromMail,
         to: userEmail,
         subject: subject,
-        html: body
+        html: body,
+        text: body
     }
 
     SMTPtransport.sendMail(mailOptions, (error) => {
