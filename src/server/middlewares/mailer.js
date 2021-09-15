@@ -1,9 +1,7 @@
-const nodemailer = require('nodemailer');
-const config = require('../config')
+const { SMTPtransport } = require('../utils/mailHelper');
 
 module.exports = (request, response, next) => {
 
-    const { mailSender, mailPassword } = config;
     const {  id, amount } = request.body;
     const { studentsList, userEmail, userName, userSchool, userPhone } = request.body.formData;
     const fromMail = 'event@katha.org';
@@ -51,16 +49,6 @@ module.exports = (request, response, next) => {
     Request you to keep a tab on www.utsav.katha.org for more updates and results.<br/><br/>
     We wish you all the best.<br/><br/>
     Let us know if you have any other queries or concerns. Happy to help!`;
-
-    const SMTPtransport = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        secure: false,
-        requireTLS: true,
-        auth: {
-            user: mailSender,
-            pass: mailPassword
-        }
-    });
 
     SMTPtransport.verify(function (error) {
         if (error) {
