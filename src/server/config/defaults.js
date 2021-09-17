@@ -11,4 +11,5 @@ module.exports = {
   s3Folder: 'dev/',
   razorpayKeyId: '',
   razorpayKeySecret: '',
+  contactUsNotify: 'vhemantharajan@gmail.com'
 }
