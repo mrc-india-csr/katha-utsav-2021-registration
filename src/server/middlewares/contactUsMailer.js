@@ -2,7 +2,7 @@ const { SMTPtransport } = require('../utils/mailHelper');
 const config = require('../config');
 
 module.exports = (request, response, next) => {
-    const { mailSender } = config;
+    const { mailSender, contactUsNotify } = config;
     const { name, phone, email, message} = request.body;
     const subject = 'Contact Us Query Received';
     const body = `Name - ${name} <br/>
@@ -24,7 +24,7 @@ module.exports = (request, response, next) => {
 
       let mailOptions = {
         from: mailSender,
-        to: mailSender,
+        to: contactUsNotify,
         subject: subject,
         html: body,
         text: body
