@@ -2,7 +2,7 @@ stackname: kathautsavregistrationmodule
 env_folder: env_vars
 replicas:
   dev: 1
-  prod: 10
+  prod: 5
 restart_policy: any
 max_mem: 1024M
 max_cpu: 1
