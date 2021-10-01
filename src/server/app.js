@@ -11,7 +11,7 @@ const { ValidationError } = require('express-validation')
 const { router } = require('./routes/index');
 const {registerRoutes} = require("./routes/register");
 const { storyRoutes } = require("./routes/stories");
-
+const { analysisRoutes } = require("./routes/analysis");
 
 //Port Assigning
 const port = process.env.PORT || 3002;
@@ -37,6 +37,7 @@ pool.on('error', (err) => {
 app.use('/katha_utsav/v1', router);
 app.use('/katha_utsav/v1/story', storyRoutes);
 app.use('/katha_utsav/v1/register', registerRoutes);
+app.use('/katha_utsav/v1/analysis', analysisRoutes);
 
 app.get('/api/healthy', (req, res) => {
   res.status(200).json({ message: ' Web is healthy!'+ process.env.NODE_ENV});
