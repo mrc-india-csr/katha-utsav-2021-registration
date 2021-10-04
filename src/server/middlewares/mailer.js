@@ -9,7 +9,7 @@ module.exports = (request, response, next) => {
 
     const schoolRegistratonTable = () => {
         var regIdText = '';
-        const amountIndividual = (amount/studentsList.length)/100; 
+        const amountIndividual = (amount/studentsList.length)/100;
         studentsList.forEach( student => {
             regIdText = regIdText + `<tr><td>${student.studentName}</td>
             <td>${userSchool}</td>
@@ -46,7 +46,7 @@ module.exports = (request, response, next) => {
         </tr>`}
     </table><br/>
     ${isSchoolRegistration ? '' : `Your unique Katha Utsav'21 ID:<b>${studentsList[0].studentId}.</b><br/><br/>`}
-    Request you to keep a tab on www.utsav.katha.org for more updates and results.<br/><br/>
+    Request you to keep a tab on kathautsav.org for more updates and results.<br/><br/>
     We wish you all the best.<br/><br/>
     Let us know if you have any other queries or concerns. Happy to help!`;
 
