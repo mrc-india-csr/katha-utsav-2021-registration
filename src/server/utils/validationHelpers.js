@@ -36,7 +36,7 @@ const registerSuccessValidation = Joi.object().keys({
     userPhone: Joi.number().required(),
     userSchool: Joi.string().required(),
     userCity: Joi.string().required(),
-    studentsList: Joi.array().min(1).max(5).items(studentSuccessValidationSchema).required()
+    studentsList: Joi.array().min(1).max(20).items(studentSuccessValidationSchema).required()
 });
 
 const successValidation = {
