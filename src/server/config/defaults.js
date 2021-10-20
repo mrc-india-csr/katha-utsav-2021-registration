@@ -9,6 +9,7 @@ module.exports = {
   s3AccessKey: '',
   s3SecretKey: '',
   s3Folder: 'dev/',
+  s3ResultFolder: 'devResult/',
   razorpayKeyId: '',
   razorpayKeySecret: '',
   contactUsNotify: 'vhemantharajan@gmail.com'

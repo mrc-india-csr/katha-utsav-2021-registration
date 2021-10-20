@@ -2,7 +2,20 @@ const s3 = require('../initializers/awsS3');
 const fs = require('fs');
 const config = require('../config');
 
-const { s3BucketName, s3Folder } = config
+const { s3BucketName, s3Folder, s3ResultFolder } = config
+
+function s3UploadResult(filePath) {
+  const fileStream = fs.createReadStream(filePath).on('error', function (e) {
+    return 'error';
+  })
+
+  const uploadParams = {
+    Bucket: s3BucketName,
+    Body: fileStream,
+    Key: s3ResultFolder + 'results.xlsx'
+  }
+  return s3.upload(uploadParams).promise()
+}
 
 function s3UploadFile(file) {
   const fileStream = fs.createReadStream(file.path).on('error', function (e) {
@@ -46,3 +59,4 @@ async function s3RemoveFile(filePath) {
 exports.s3UploadFile = s3UploadFile;
 exports.s3GetFile = s3GetFile;
 exports.s3RemoveFile = s3RemoveFile;
+exports.s3UploadResult = s3UploadResult;
