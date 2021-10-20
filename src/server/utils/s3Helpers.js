@@ -12,7 +12,7 @@ function s3UploadResult(filePath) {
   const uploadParams = {
     Bucket: s3BucketName,
     Body: fileStream,
-    Key: s3ResultFolder + 'results.xlsx'
+    Key: s3Folder + 'result/results.xlsx'
   }
   return s3.upload(uploadParams).promise()
 }
