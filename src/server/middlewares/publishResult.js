@@ -4,6 +4,7 @@ const PublishResult = async (req, res, next) => {
   try {
     const result = await s3UploadResult('./uploads/results.xlsx');
     console.log(result);
+    res.locals.resultLocation = result.Location;
     next();
   } catch (e) {
     console.log(e);
